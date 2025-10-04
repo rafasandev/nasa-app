@@ -1,0 +1,24 @@
+services:
+  n8n:
+    image: n8nio/n8n
+    container_name: n8n-service
+    ports:
+      - "5678:5678"
+    environment:
+      - GENERIC_TIMEZONE=America/Sao_Paulo
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ngrok-service
+    command: http n8n:5678
+    environment:
+      NGROK_AUTHTOKEN: '33WM3vLwryRwbJgVEbelc4bo6gK_6utbBfFViky2CviJB7QRp'
+    ports:
+      - "4040:4040"
+    depends_on:
+    - n8n
+
+volumes:
+  n8n_data:
